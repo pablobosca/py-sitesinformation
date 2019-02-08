@@ -1,6 +1,7 @@
 import string
 import socket
 import csv
+import requests
 
 url_list = 'exito.txt';
 l_urls = list()
@@ -34,6 +35,7 @@ report = list()
 row = list()
 row.append('Site')
 row.append('IP Address')
+row.append('Protocol')
 report.append(row)
 with open('exito_output.csv', 'w') as f:
 	writer = csv.writer(f,dialect='excel')
@@ -43,6 +45,7 @@ with open('exito_output.csv', 'w') as f:
 		row.append(domain)
 		try:
 			row.append(socket.gethostbyname(domain))
+			row.append(requests.get('http://' + domain).url.split(':')[0])
 			report.append(row)
 			print row
 		except:
