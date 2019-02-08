@@ -1,11 +1,13 @@
 import string
 import socket
+import csv
+
 url_list = 'exito.txt';
 l_urls = list()
 f_urls = open(url_list, 'r');
 for url in f_urls: # for each url in urls
 	if url.strip()=='':
-		continue
+		continue	
 	else:
 		l_urls.append(url.strip()) #store each line of the file in an array
 #check if every line has http first, splitting by http://
@@ -26,8 +28,33 @@ if invalidFile == 1:
 	print ("\n\n\t\taborting since there are invalid URLs\n\n\n")
 	exit()
 #print names
-for name in names:
-	try:
-		socket.gethostbyname(name.split('/')[0])
-	except:
-		print (name.split('/')[0] + " non existant")
+cont = 0
+fail = 0
+report = list()
+row = list()
+row.append('Site')
+row.append('IP Address')
+report.append(row)
+with open('exito_output.csv', 'w') as f:
+	writer = csv.writer(f,dialect='excel')
+	for name in names:
+		domain = name.split('/')[0]
+		row = list()
+		row.append(domain)
+		try:
+			row.append(socket.gethostbyname(domain))
+			report.append(row)
+			print row
+		except:
+			fail = fail + 1
+			row.append("Unresolved")
+			report.append(row)
+	writer.writerows(report)
+	print report
+	cont = cont + 1 
+
+
+
+#'forfriends.do.am','195.216.243.40'
+#'www.pyabinava.site','104.24.112.136'
+#'calmstars.do.am','213.174.157.150'
