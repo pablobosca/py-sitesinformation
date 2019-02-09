@@ -52,6 +52,7 @@ with open('exito_output.csv', 'w') as f:
 			fail = fail + 1
 			row.append("Unresolved")
 			report.append(row)
+			print row
 	writer.writerows(report)
 	print report
 	cont = cont + 1 
