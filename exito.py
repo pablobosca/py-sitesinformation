@@ -45,7 +45,10 @@ with open('exito_output.csv', 'w') as f:
 		row.append(domain)
 		try:
 			row.append(socket.gethostbyname(domain))
-			row.append(requests.get('http://' + domain).url.split(':')[0])
+			try:
+				row.append(requests.get('http://' + domain, timeout=3).url.split(':')[0])
+			except:
+				row.append("Manual check needed") #Since timeout, or too many redirects, or other request error
 			report.append(row)
 			print row
 		except:
